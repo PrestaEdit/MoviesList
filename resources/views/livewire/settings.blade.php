@@ -1,15 +1,18 @@
-<div class="min-h-screen bg-slate-900">
-    <!-- Header -->
-    <div class="px-4 py-3 border-b border-slate-800 flex items-center gap-3">
-        <a href="/" wire:navigate class="text-slate-400 hover:text-white">←</a>
-        <h1 class="text-white font-semibold">Paramètres</h1>
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900" style="padding-bottom: var(--safe-bottom, 0px);">
+    {{-- Header --}}
+    <div class="px-4 py-4 flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+        <a href="/" wire:navigate class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">‹</a>
+        <h1 class="text-xl font-extrabold text-slate-900 dark:text-white">Réglages</h1>
     </div>
 
-    <div class="px-4 py-6 space-y-8">
-        <!-- Profil -->
-        <section>
-            <div class="bg-slate-800 rounded-xl p-4 flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-white text-lg font-bold">
+    <div class="p-4 max-w-lg mx-auto space-y-4">
+
+        {{-- Profil --}}
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Profil</p>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-lg font-extrabold shrink-0"
+                     style="background: linear-gradient(135deg, #0ea5e9, #6366f1);">
                     {{ strtoupper(substr($this->name ?: 'M', 0, 1)) }}
                 </div>
                 <div class="flex-1">
@@ -18,57 +21,58 @@
                         wire:blur="updateName"
                         type="text"
                         value="{{ $name }}"
-                        class="bg-transparent text-white font-medium w-full focus:outline-none border-b border-transparent focus:border-red-500 transition-colors"
+                        class="bg-transparent text-slate-900 dark:text-white font-semibold w-full focus:outline-none border-b border-transparent focus:border-sky-500 transition-colors"
                     >
-                    <p class="text-slate-500 text-xs mt-1">Appuyer pour modifier</p>
+                    <p class="text-slate-400 text-xs mt-1">Toucher pour modifier</p>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Co-watchers -->
-        <section>
-            <h2 class="text-slate-400 text-xs uppercase tracking-widest mb-3">Co-watchers</h2>
+        {{-- Co-watchers --}}
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Co-watchers</p>
             <div class="space-y-2">
                 @foreach($coWatchers as $cw)
-                <div class="bg-slate-800 rounded-lg px-4 py-3 flex justify-between items-center">
-                    <span class="text-white text-sm">{{ $cw->name }}</span>
-                    <button wire:click="deleteCoWatcher({{ $cw->id }})" class="text-red-500 hover:text-red-400 text-lg leading-none">✕</button>
+                <div class="flex justify-between items-center py-2 border-b border-slate-100 dark:border-slate-700 last:border-0">
+                    <span class="text-slate-900 dark:text-white text-sm font-medium">{{ $cw->name }}</span>
+                    <button wire:click="deleteCoWatcher({{ $cw->id }})" class="w-7 h-7 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-400 hover:text-red-500 text-sm transition-colors">✕</button>
                 </div>
                 @endforeach
 
-                <!-- Add form -->
-                <form wire:submit="addCoWatcher" class="flex gap-2">
+                <form wire:submit="addCoWatcher" class="flex gap-2 pt-2">
                     <input
                         wire:model="newCoWatcherName"
                         type="text"
-                        placeholder="Nouveau co-watcher…"
-                        class="flex-1 bg-slate-800 border border-dashed border-slate-600 rounded-lg px-4 py-3 text-white text-sm placeholder-slate-500 focus:border-red-500 focus:outline-none"
+                        placeholder="Ajouter un co-watcher…"
+                        class="flex-1 bg-slate-50 dark:bg-slate-700 border border-dashed border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white text-sm placeholder-slate-400 focus:border-sky-500 focus:outline-none"
                     >
-                    <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-4 rounded-lg text-sm font-medium transition-colors">+</button>
+                    <button type="submit" class="w-10 h-10 rounded-xl bg-sky-500 hover:bg-sky-400 text-white flex items-center justify-center text-xl font-light transition-colors">+</button>
                 </form>
                 @error('newCoWatcherName')
-                <p class="text-red-400 text-sm">{{ $message }}</p>
+                <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </div>
-        </section>
+        </div>
 
-        <!-- Thème -->
-        <section>
-            <h2 class="text-slate-400 text-xs uppercase tracking-widest mb-3">Thème</h2>
+        {{-- Thème --}}
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Thème</p>
             <div class="flex gap-2">
                 <button
                     wire:click="setTheme('dark')"
-                    class="flex-1 py-3 rounded-xl text-sm font-medium transition-colors border {{ $theme === 'dark' ? 'bg-slate-700 border-red-500 text-white' : 'bg-slate-800 border-slate-600 text-slate-400' }}"
+                    class="flex-1 py-3 rounded-xl text-sm font-semibold transition-colors border {{ $theme === 'dark' ? 'bg-sky-500 border-sky-500 text-white' : 'bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400' }}"
                 >
                     🌙 Sombre
                 </button>
                 <button
                     wire:click="setTheme('light')"
-                    class="flex-1 py-3 rounded-xl text-sm font-medium transition-colors border {{ $theme === 'light' ? 'bg-slate-200 border-red-500 text-slate-900' : 'bg-slate-800 border-slate-600 text-slate-400' }}"
+                    class="flex-1 py-3 rounded-xl text-sm font-semibold transition-colors border {{ $theme === 'light' ? 'bg-sky-500 border-sky-500 text-white' : 'bg-slate-50 dark:bg-slate-700 border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400' }}"
                 >
                     ☀️ Clair
                 </button>
             </div>
-        </section>
+        </div>
+
+        <p class="text-center text-xs text-slate-300 dark:text-slate-600 mt-2">MoviesList</p>
     </div>
 </div>
