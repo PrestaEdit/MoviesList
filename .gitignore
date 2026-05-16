@@ -24,3 +24,7 @@ yarn-error.log
 .worktrees/
 .superpowers/
 database/*.sqlite
+
+# Credential files (keystores, private keys, etc.)
+/credentials/
+storage/logs/laravel.log
