@@ -1,6 +1,13 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="fr">
 <head>
+    <script>
+        (function() {
+            var t = localStorage.getItem('movieslist_theme') || 'dark';
+            document.documentElement.classList.remove('dark', 'light');
+            document.documentElement.classList.add(t);
+        })();
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoviesList</title>

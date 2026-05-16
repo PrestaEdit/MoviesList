@@ -9,10 +9,20 @@ class Settings extends Component
 {
     public string $name = '';
     public string $newCoWatcherName = '';
+    public string $theme = 'dark';
 
     public function mount(): void
     {
         $this->name = Profile::first()?->name ?? '';
+        $this->theme = Profile::first()?->theme ?? 'dark';
+    }
+
+    public function setTheme(string $theme): void
+    {
+        if (!in_array($theme, ['dark', 'light'])) return;
+        Profile::first()?->update(['theme' => $theme]);
+        $this->theme = $theme;
+        $this->dispatch('theme-changed', theme: $theme);
     }
 
     public function updateName(): void

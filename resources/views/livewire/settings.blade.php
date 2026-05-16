@@ -51,5 +51,24 @@
                 @enderror
             </div>
         </section>
+
+        <!-- Thème -->
+        <section>
+            <h2 class="text-slate-400 text-xs uppercase tracking-widest mb-3">Thème</h2>
+            <div class="flex gap-2">
+                <button
+                    wire:click="setTheme('dark')"
+                    class="flex-1 py-3 rounded-xl text-sm font-medium transition-colors border {{ $theme === 'dark' ? 'bg-slate-700 border-red-500 text-white' : 'bg-slate-800 border-slate-600 text-slate-400' }}"
+                >
+                    🌙 Sombre
+                </button>
+                <button
+                    wire:click="setTheme('light')"
+                    class="flex-1 py-3 rounded-xl text-sm font-medium transition-colors border {{ $theme === 'light' ? 'bg-slate-200 border-red-500 text-slate-900' : 'bg-slate-800 border-slate-600 text-slate-400' }}"
+                >
+                    ☀️ Clair
+                </button>
+            </div>
+        </section>
     </div>
 </div>

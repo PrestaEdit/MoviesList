@@ -4,7 +4,6 @@
     <script>
         (function() {
             var t = localStorage.getItem('movieslist_theme') || 'dark';
-            document.documentElement.classList.remove('dark', 'light');
             document.documentElement.classList.add(t);
         })();
     </script>
@@ -17,5 +16,13 @@
 <body class="bg-slate-900 min-h-screen">
     {{ $slot }}
     @livewireScripts
+    <script>
+        window.addEventListener('theme-changed', (e) => {
+            const theme = e.detail.theme;
+            localStorage.setItem('movieslist_theme', theme);
+            document.documentElement.classList.remove('dark', 'light');
+            document.documentElement.classList.add(theme);
+        });
+    </script>
 </body>
 </html>
