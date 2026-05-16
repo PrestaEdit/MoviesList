@@ -13,6 +13,7 @@ class MovieSearch extends Component
     public string $query = '';
     public array $results = [];
     public ?array $selectedMovie = null;
+    public string $searchError = '';
 
     public string $status = 'to_watch';
     public ?int $rating = null;
@@ -22,11 +23,17 @@ class MovieSearch extends Component
 
     public function updatedQuery(): void
     {
+        $this->searchError = '';
         if (strlen($this->query) < 2) {
             $this->results = [];
             return;
         }
-        $this->results = app(TmdbService::class)->search($this->query);
+        try {
+            $this->results = app(TmdbService::class)->search($this->query);
+        } catch (\Throwable $e) {
+            $this->results = [];
+            $this->searchError = 'Impossible de contacter TMDB. Vérifie ta clé API.';
+        }
     }
 
     public function selectResult(int $tmdbId, string $type): void

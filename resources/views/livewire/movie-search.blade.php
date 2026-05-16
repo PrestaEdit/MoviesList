@@ -30,6 +30,11 @@
                 >
             </div>
             <div class="flex-1 overflow-y-auto px-4 space-y-2 pb-6">
+                @if($searchError)
+                <div class="rounded-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3">
+                    <p class="text-red-600 dark:text-red-400 text-sm">{{ $searchError }}</p>
+                </div>
+                @endif
                 @foreach($results as $result)
                     @if(in_array($result['media_type'] ?? '', ['movie', 'tv']))
                     <button
