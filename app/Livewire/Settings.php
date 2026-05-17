@@ -10,11 +10,16 @@ class Settings extends Component
     public string $name = '';
     public string $newCoWatcherName = '';
     public string $theme = 'dark';
+    public string $tmdbApiKey = '';
+    public bool $tmdbApiKeyVisible = false;
+    public bool $tmdbApiKeySaved = false;
 
     public function mount(): void
     {
-        $this->name = Profile::first()?->name ?? '';
-        $this->theme = Profile::first()?->theme ?? 'dark';
+        $profile = Profile::first();
+        $this->name = $profile?->name ?? '';
+        $this->theme = $profile?->theme ?? 'dark';
+        $this->tmdbApiKey = $profile?->tmdb_api_key ?? '';
     }
 
     public function setTheme(string $theme): void
@@ -29,6 +34,19 @@ class Settings extends Component
     {
         $this->validate(['name' => 'required|string|max:50']);
         Profile::first()?->update(['name' => $this->name]);
+    }
+
+    public function saveTmdbApiKey(): void
+    {
+        $this->validate(['tmdbApiKey' => 'nullable|string|max:255']);
+        Profile::first()?->update(['tmdb_api_key' => $this->tmdbApiKey ?: null]);
+        $this->tmdbApiKeySaved = true;
+        $this->js('setTimeout(() => $wire.set("tmdbApiKeySaved", false), 2000)');
+    }
+
+    public function toggleTmdbApiKeyVisibility(): void
+    {
+        $this->tmdbApiKeyVisible = !$this->tmdbApiKeyVisible;
     }
 
     public function addCoWatcher(): void

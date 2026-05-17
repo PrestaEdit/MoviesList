@@ -1,7 +1,7 @@
 <div class="min-h-screen flex items-center justify-center px-6">
     <div class="w-full max-w-sm text-center space-y-8">
         <div>
-            <div class="text-6xl mb-4">🎬</div>
+            <div class="text-6xl mb-4">🍿</div>
             <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white">Bienvenue sur MoviesList</h1>
             <p class="text-slate-500 dark:text-slate-400 mt-2">Comment tu t'appelles ?</p>
         </div>

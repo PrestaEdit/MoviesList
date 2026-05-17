@@ -42,7 +42,7 @@
     {{-- Grid --}}
     @if($entries->isEmpty())
     <div class="flex flex-col items-center justify-center py-20 text-center px-4">
-        <div class="text-5xl mb-4">🎬</div>
+        <div class="text-5xl mb-4">🍿</div>
         <p class="text-slate-900 dark:text-white font-semibold">Ta liste est vide</p>
         <p class="text-slate-400 text-sm mt-1">Appuie sur + pour ajouter un titre.</p>
     </div>
@@ -53,7 +53,7 @@
             @if($entry->movie->poster_path)
             <img src="{{ $entry->movie->posterUrl() }}" class="w-full h-full object-cover rounded-lg" alt="{{ $entry->movie->title }}">
             @else
-            <div class="w-full h-full bg-white dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-300 text-2xl" title="{{ $entry->movie->title }}">🎬</div>
+            <div class="w-full h-full bg-white dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-300 text-2xl" title="{{ $entry->movie->title }}">🍿</div>
             @endif
             @if($entry->status === 'watched')
             <div class="absolute top-1 right-1 w-5 h-5 bg-sky-500 rounded-full flex items-center justify-center text-white text-xs">✓</div>

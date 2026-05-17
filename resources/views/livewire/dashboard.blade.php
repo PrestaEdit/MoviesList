@@ -18,7 +18,7 @@
                 @if($entry->movie->poster_path)
                 <img src="{{ $entry->movie->posterUrl() }}" class="w-24 h-36 object-cover rounded-2xl shadow-sm" alt="{{ $entry->movie->title }}">
                 @else
-                <div class="w-24 h-36 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 text-2xl">🎬</div>
+                <div class="w-24 h-36 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 text-2xl">🍿</div>
                 @endif
             </a>
             @endforeach
@@ -36,7 +36,7 @@
                 @if($entry->movie->poster_path)
                 <img src="{{ $entry->movie->posterUrl() }}" class="w-24 h-36 object-cover rounded-2xl shadow-sm" alt="{{ $entry->movie->title }}">
                 @else
-                <div class="w-24 h-36 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 text-2xl">🎬</div>
+                <div class="w-24 h-36 bg-white dark:bg-slate-800 rounded-2xl shadow-sm flex items-center justify-center text-slate-400 text-2xl">🍿</div>
                 @endif
             </a>
             @endforeach
@@ -85,7 +85,7 @@
                     <img src="https://image.tmdb.org/t/p/w342{{ $rec['poster_path'] }}" class="w-full h-full object-cover" alt="{{ $rec['title'] ?? $rec['name'] ?? '' }}">
                 </div>
                 @else
-                <div class="aspect-[2/3] flex items-center justify-center text-slate-300 text-2xl">🎬</div>
+                <div class="aspect-[2/3] flex items-center justify-center text-slate-300 text-2xl">🍿</div>
                 @endif
                 <p class="text-slate-600 dark:text-slate-300 text-xs px-2 py-1.5 truncate font-medium">{{ $rec['title'] ?? $rec['name'] ?? '' }}</p>
             </div>
@@ -97,7 +97,7 @@
     {{-- Empty state --}}
     @if($favorites->isEmpty() && $recent->isEmpty() && !$randomPick)
     <div class="flex flex-col items-center justify-center py-20 text-center">
-        <div class="text-5xl mb-4">🎬</div>
+        <div class="text-5xl mb-4">🍿</div>
         <p class="text-slate-900 dark:text-white font-semibold">Ta liste est vide</p>
         <p class="text-slate-400 text-sm mt-2">Va dans "Mes films" et appuie sur + pour commencer.</p>
     </div>

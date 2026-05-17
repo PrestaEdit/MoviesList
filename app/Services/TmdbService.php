@@ -1,20 +1,28 @@
 <?php
 namespace App\Services;
 
+use App\Models\Profile;
 use Illuminate\Support\Facades\Http;
 
 class TmdbService
 {
     private string $baseUrl;
-    private string $apiKey;
-    private array $defaultParams;
 
     public function __construct()
     {
         $this->baseUrl = config('services.tmdb.base_url', 'https://api.themoviedb.org/3');
-        $this->apiKey = config('services.tmdb.key');
-        $this->defaultParams = [
-            'api_key' => $this->apiKey,
+    }
+
+    private function apiKey(): string
+    {
+        return Profile::first()?->tmdb_api_key
+            ?: config('services.tmdb.key', '');
+    }
+
+    private function defaultParams(): array
+    {
+        return [
+            'api_key' => $this->apiKey(),
             'language' => 'fr-FR',
             'region' => 'FR',
         ];
@@ -23,7 +31,7 @@ class TmdbService
     public function search(string $query): array
     {
         $response = Http::timeout(5)
-            ->get("{$this->baseUrl}/search/multi", array_merge($this->defaultParams, [
+            ->get("{$this->baseUrl}/search/multi", array_merge($this->defaultParams(), [
                 'query' => $query,
                 'include_adult' => false,
             ]));
@@ -34,7 +42,7 @@ class TmdbService
     public function getMovie(int $tmdbId): array
     {
         $response = Http::timeout(5)
-            ->get("{$this->baseUrl}/movie/{$tmdbId}", array_merge($this->defaultParams, [
+            ->get("{$this->baseUrl}/movie/{$tmdbId}", array_merge($this->defaultParams(), [
                 'append_to_response' => 'genres',
             ]));
 
@@ -44,7 +52,7 @@ class TmdbService
     public function getTvShow(int $tmdbId): array
     {
         $response = Http::timeout(5)
-            ->get("{$this->baseUrl}/tv/{$tmdbId}", $this->defaultParams);
+            ->get("{$this->baseUrl}/tv/{$tmdbId}", $this->defaultParams());
 
         return $response->json() ?? [];
     }
@@ -54,7 +62,7 @@ class TmdbService
         $endpoint = $type === 'tv' ? "tv/{$tmdbId}" : "movie/{$tmdbId}";
 
         $response = Http::timeout(5)
-            ->get("{$this->baseUrl}/{$endpoint}/recommendations", $this->defaultParams);
+            ->get("{$this->baseUrl}/{$endpoint}/recommendations", $this->defaultParams());
 
         return $response->json('results', []);
     }
