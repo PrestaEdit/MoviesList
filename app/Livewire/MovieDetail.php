@@ -11,7 +11,7 @@ class MovieDetail extends Component
     public bool $editing = false;
 
     public string $status = '';
-    public ?int $rating = null;
+    public ?float $rating = null;
     public string $comment = '';
     public string $watchedAt = '';
     public array $selectedCoWatcherIds = [];
@@ -47,7 +47,7 @@ class MovieDetail extends Component
     {
         $this->validate([
             'status' => 'required|in:to_watch,watched',
-            'rating' => 'nullable|integer|min:1|max:10',
+            'rating' => 'nullable|numeric|min:0.5|max:10',
             'watchedAt' => 'nullable|date',
         ]);
 

@@ -96,8 +96,11 @@
                 <input wire:model="watchedAt" type="date"
                     class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:border-sky-500 focus:outline-none">
                 <div>
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Note : {{ $rating ?? '—' }}/10</p>
-                    <input wire:model="rating" type="range" min="1" max="10" class="w-full accent-sky-500">
+                    <div class="flex justify-between items-center mb-1">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">Note</p>
+                        <span class="text-sm font-bold text-sky-500">{{ $rating !== null ? $rating.'/10' : '—' }}</span>
+                    </div>
+                    <input wire:model.live="rating" type="range" min="0.5" max="10" step="0.5" class="w-full accent-sky-500">
                 </div>
                 <textarea wire:model="comment" rows="2" placeholder="Ton avis…"
                     class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 focus:outline-none resize-none"></textarea>
