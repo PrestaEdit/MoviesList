@@ -1,6 +1,6 @@
-<div class="relative min-h-screen">
+<div class="relative min-h-screen" x-data="{ filtersOpen: false }">
 
-    {{-- Quick filters --}}
+    {{-- Barre sticky : statut + bouton filtres --}}
     <div class="px-4 py-3 flex gap-2 overflow-x-auto sticky bg-slate-50 dark:bg-slate-900 z-10 border-b border-slate-200 dark:border-slate-800" style="top: var(--safe-top);">
         <button wire:click="$set('statusFilter', '')"
             class="px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors {{ $statusFilter === '' ? 'bg-sky-500 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700' }}">Tous</button>
@@ -8,43 +8,85 @@
             class="px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors {{ $statusFilter === 'to_watch' ? 'bg-sky-500 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700' }}">À voir</button>
         <button wire:click="$set('statusFilter', 'watched')"
             class="px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors {{ $statusFilter === 'watched' ? 'bg-sky-500 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700' }}">Vus</button>
-        <button wire:click="$toggle('showAdvancedFilters')"
-            class="px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors {{ $showAdvancedFilters ? 'bg-sky-500 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700' }}">⚙ Filtres</button>
+
+        {{-- Bouton filtres avec badge --}}
+        @php $activeCount = (int)(bool)$typeFilter + (int)(bool)$durationFilter + (int)(bool)$genreFilter; @endphp
+        <button @click="filtersOpen = !filtersOpen"
+            class="relative ml-auto px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors shrink-0"
+            :class="filtersOpen || {{ $activeCount }} > 0 ? 'bg-sky-500 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700'">
+            <span class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18M7 12h10M11 20h2"/>
+                </svg>
+                Filtres
+                @if($activeCount > 0)
+                <span class="w-4 h-4 rounded-full bg-white text-sky-500 text-[10px] font-bold flex items-center justify-center leading-none">{{ $activeCount }}</span>
+                @endif
+            </span>
+        </button>
     </div>
 
-    {{-- Advanced filters --}}
-    @if($showAdvancedFilters)
-    <div class="px-4 py-3 border-b border-slate-200 dark:border-slate-800 space-y-3 bg-white dark:bg-slate-800/50">
-        <div class="flex gap-2">
-            <select wire:model.live="typeFilter" class="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white text-sm focus:border-sky-500 focus:outline-none">
-                <option value="">Tous types</option>
-                <option value="movie">Films</option>
-                <option value="tv">Séries</option>
-            </select>
-            <select wire:model.live="durationFilter" class="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white text-sm focus:border-sky-500 focus:outline-none">
-                <option value="">Toutes durées</option>
-                <option value="short">Court (≤ 60 min)</option>
-                <option value="medium">Moyen (61–120 min)</option>
-                <option value="long">Long (> 120 min)</option>
-            </select>
+    {{-- Panel filtres animé --}}
+    <div x-show="filtersOpen"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 -translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 -translate-y-2"
+         class="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/60 px-4 py-4 space-y-4">
+
+        {{-- Type --}}
+        <div>
+            <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-2">Type</p>
+            <div class="flex gap-2">
+                <button wire:click="setTypeFilter('movie')"
+                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-colors {{ $typeFilter === 'movie' ? 'bg-sky-500 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400' }}">🎬 Films</button>
+                <button wire:click="setTypeFilter('tv')"
+                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-colors {{ $typeFilter === 'tv' ? 'bg-sky-500 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400' }}">📺 Séries</button>
+            </div>
         </div>
+
+        {{-- Durée --}}
+        <div>
+            <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-2">Durée</p>
+            <div class="flex gap-2">
+                <button wire:click="setDurationFilter('short')"
+                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-colors {{ $durationFilter === 'short' ? 'bg-sky-500 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400' }}">≤ 1h</button>
+                <button wire:click="setDurationFilter('medium')"
+                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-colors {{ $durationFilter === 'medium' ? 'bg-sky-500 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400' }}">1h – 2h</button>
+                <button wire:click="setDurationFilter('long')"
+                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-colors {{ $durationFilter === 'long' ? 'bg-sky-500 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400' }}">> 2h</button>
+            </div>
+        </div>
+
+        {{-- Genres --}}
         @if($genres->count())
-        <select wire:model.live="genreFilter" class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white text-sm focus:border-sky-500 focus:outline-none">
-            <option value="">Tous genres</option>
-            @foreach($genres as $genre)
-            <option value="{{ $genre }}">{{ $genre }}</option>
-            @endforeach
-        </select>
+        <div>
+            <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wide mb-2">Genre</p>
+            <div class="flex flex-wrap gap-2">
+                @foreach($genres as $genre)
+                <button wire:click="toggleGenre('{{ $genre }}')"
+                    class="px-3 py-1.5 rounded-full text-xs font-semibold transition-colors {{ $genreFilter === $genre ? 'bg-sky-500 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400' }}">{{ $genre }}</button>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
+        {{-- Reset --}}
+        @if($activeCount > 0)
+        <button wire:click="resetFilters" class="text-xs text-sky-500 dark:text-sky-400 font-semibold">
+            Réinitialiser les filtres
+        </button>
         @endif
     </div>
-    @endif
 
-    {{-- Grid --}}
+    {{-- Grille --}}
     @if($entries->isEmpty())
     <div class="flex flex-col items-center justify-center py-20 text-center px-4">
         <div class="text-5xl mb-4">🍿</div>
-        <p class="text-slate-900 dark:text-white font-semibold">Ta liste est vide</p>
-        <p class="text-slate-400 text-sm mt-1">Appuie sur + pour ajouter un titre.</p>
+        <p class="text-slate-900 dark:text-white font-semibold">Aucun résultat</p>
+        <p class="text-slate-400 text-sm mt-1">Modifie les filtres ou ajoute un titre.</p>
     </div>
     @else
     <div class="grid grid-cols-3 gap-1 p-1">
