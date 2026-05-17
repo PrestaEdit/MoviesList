@@ -104,7 +104,7 @@
                 @if($coWatchers->count())
                 <div class="flex flex-wrap gap-2">
                     @foreach($coWatchers as $cw)
-                    <button wire:click="$toggle('selectedCoWatcherIds', {{ $cw->id }})"
+                    <button wire:click="toggleCoWatcher({{ $cw->id }})"
                         class="px-3 py-1.5 rounded-full text-sm font-medium transition-colors {{ in_array($cw->id, $selectedCoWatcherIds) ? 'bg-sky-500 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400' }}">
                         {{ $cw->name }}
                     </button>

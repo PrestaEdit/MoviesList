@@ -32,6 +32,17 @@ class MovieDetail extends Component
         $this->entry->refresh();
     }
 
+    public function toggleCoWatcher(int $id): void
+    {
+        if (in_array($id, $this->selectedCoWatcherIds)) {
+            $this->selectedCoWatcherIds = array_values(
+                array_filter($this->selectedCoWatcherIds, fn($cwId) => $cwId !== $id)
+            );
+        } else {
+            $this->selectedCoWatcherIds[] = $id;
+        }
+    }
+
     public function save(): void
     {
         $this->validate([
