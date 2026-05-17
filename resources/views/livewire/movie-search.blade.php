@@ -44,7 +44,7 @@
                         @if($result['poster_path'] ?? null)
                         <img src="https://image.tmdb.org/t/p/w92{{ $result['poster_path'] }}" class="w-10 h-14 object-cover rounded-xl" alt="">
                         @else
-                        <div class="w-10 h-14 bg-slate-200 dark:bg-slate-700 rounded-xl flex items-center justify-center text-slate-400 text-lg">🎬</div>
+                        <div class="w-10 h-14 bg-slate-200 dark:bg-slate-700 rounded-xl flex items-center justify-center text-slate-400 text-lg">🍿</div>
                         @endif
                         <div>
                             <p class="text-slate-900 dark:text-white text-sm font-medium">{{ $result['title'] ?? $result['name'] ?? '' }}</p>
