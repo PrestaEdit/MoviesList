@@ -9,9 +9,13 @@ use Livewire\Component;
 class Dashboard extends Component
 {
     public ?WatchlistEntry $randomPick = null;
+    public string $pickType = '';
+    public string $pickDuration = '';
+    public bool $hasToWatch = false;
 
     public function mount(): void
     {
+        $this->hasToWatch = WatchlistEntry::where('status', 'to_watch')->exists();
         $this->randomPick = $this->getRandomPick();
     }
 
@@ -20,10 +24,36 @@ class Dashboard extends Component
         $this->randomPick = $this->getRandomPick();
     }
 
+    public function setPickType(string $type): void
+    {
+        $this->pickType = ($this->pickType === $type) ? '' : $type;
+        $this->randomPick = $this->getRandomPick();
+    }
+
+    public function setPickDuration(string $duration): void
+    {
+        $this->pickDuration = ($this->pickDuration === $duration) ? '' : $duration;
+        $this->randomPick = $this->getRandomPick();
+    }
+
     private function getRandomPick(): ?WatchlistEntry
     {
         return WatchlistEntry::with('movie')
             ->where('status', 'to_watch')
+            ->whereHas('movie', function ($q) {
+                if ($this->pickType) {
+                    $q->where('type', $this->pickType);
+                }
+                if ($this->pickDuration) {
+                    $q->whereNotNull('duration');
+                    match ($this->pickDuration) {
+                        'short'  => $q->where('duration', '<=', 90),
+                        'medium' => $q->whereBetween('duration', [91, 150]),
+                        'long'   => $q->where('duration', '>', 150),
+                        default  => null,
+                    };
+                }
+            })
             ->inRandomOrder()
             ->first();
     }
