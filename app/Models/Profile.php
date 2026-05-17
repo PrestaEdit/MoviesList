@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model
 {
-    protected $fillable = ['name', 'theme'];
+    protected $fillable = ['name', 'theme', 'tmdb_api_key'];
 }

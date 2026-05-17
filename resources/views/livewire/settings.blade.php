@@ -54,6 +54,42 @@
             </div>
         </div>
 
+        {{-- Clé API TMDB --}}
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4">
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Clé API TMDB</p>
+            <p class="text-xs text-slate-400 mb-3">Nécessaire pour rechercher des films et séries. Obtenez votre clé sur themoviedb.org.</p>
+            <form wire:submit="saveTmdbApiKey" class="space-y-2">
+                <div class="flex gap-2">
+                    <input
+                        wire:model="tmdbApiKey"
+                        type="{{ $tmdbApiKeyVisible ? 'text' : 'password' }}"
+                        placeholder="Entrez votre clé API…"
+                        autocomplete="off"
+                        class="flex-1 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white text-sm placeholder-slate-400 focus:border-sky-500 focus:outline-none font-mono"
+                    >
+                    <button
+                        type="button"
+                        wire:click="toggleTmdbApiKeyVisibility"
+                        class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-sky-500 transition-colors text-base shrink-0"
+                        title="{{ $tmdbApiKeyVisible ? 'Masquer' : 'Afficher' }}"
+                    >{{ $tmdbApiKeyVisible ? '🙈' : '👁' }}</button>
+                </div>
+                @error('tmdbApiKey')
+                <p class="text-red-500 text-xs">{{ $message }}</p>
+                @enderror
+                <button
+                    type="submit"
+                    class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white text-sm font-semibold transition-colors"
+                >
+                    @if($tmdbApiKeySaved)
+                        ✓ Enregistrée
+                    @else
+                        Enregistrer la clé
+                    @endif
+                </button>
+            </form>
+        </div>
+
         {{-- Thème --}}
         <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4">
             <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Thème</p>
