@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-slate-50 dark:bg-slate-900">
+<div class="min-h-screen bg-slate-50 dark:bg-slate-900" style="padding-bottom: var(--safe-bottom);">
     {{-- Backdrop header --}}
     @if($entry->movie->backdrop_path)
     <div class="relative h-48">
@@ -7,7 +7,7 @@
         <a href="/" wire:navigate class="absolute top-4 left-4 w-8 h-8 rounded-xl bg-white/80 dark:bg-slate-900/80 flex items-center justify-center text-slate-700 dark:text-white shadow-sm">←</a>
     </div>
     @else
-    <div class="px-4 py-4 flex items-center gap-3" style="padding-top: calc(var(--safe-top, 0px) + 1rem);">
+    <div class="px-4 py-4 flex items-center gap-3">
         <a href="/" wire:navigate class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-slate-400">←</a>
     </div>
     @endif
@@ -96,8 +96,11 @@
                 <input wire:model="watchedAt" type="date"
                     class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white focus:border-sky-500 focus:outline-none">
                 <div>
-                    <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-1">Note : {{ $rating ?? '—' }}/10</p>
-                    <input wire:model="rating" type="range" min="1" max="10" class="w-full accent-sky-500">
+                    <div class="flex justify-between items-center mb-1">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">Note</p>
+                        <span class="text-sm font-bold text-sky-500">{{ $rating !== null ? $rating.'/10' : '—' }}</span>
+                    </div>
+                    <input wire:model.live="rating" type="range" min="0.5" max="10" step="0.5" class="w-full accent-sky-500">
                 </div>
                 <textarea wire:model="comment" rows="2" placeholder="Ton avis…"
                     class="w-full bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl px-4 py-2.5 text-slate-900 dark:text-white placeholder-slate-400 focus:border-sky-500 focus:outline-none resize-none"></textarea>

@@ -16,6 +16,7 @@ class WatchlistEntry extends Model
     protected $casts = [
         'watched_at' => 'date',
         'is_favorite' => 'boolean',
+        'rating' => 'float',
     ];
 
     public function movie(): \Illuminate\Database\Eloquent\Relations\BelongsTo

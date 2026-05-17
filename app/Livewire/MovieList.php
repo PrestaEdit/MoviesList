@@ -11,10 +11,31 @@ class MovieList extends Component
     public string $typeFilter = '';
     public string $genreFilter = '';
     public string $durationFilter = '';
-    public bool $showAdvancedFilters = false;
 
     #[On('movie-added')]
     public function refresh(): void {}
+
+    public function setTypeFilter(string $type): void
+    {
+        $this->typeFilter = ($this->typeFilter === $type) ? '' : $type;
+    }
+
+    public function setDurationFilter(string $duration): void
+    {
+        $this->durationFilter = ($this->durationFilter === $duration) ? '' : $duration;
+    }
+
+    public function toggleGenre(string $genre): void
+    {
+        $this->genreFilter = ($this->genreFilter === $genre) ? '' : $genre;
+    }
+
+    public function resetFilters(): void
+    {
+        $this->typeFilter = '';
+        $this->durationFilter = '';
+        $this->genreFilter = '';
+    }
 
     public function render()
     {
@@ -49,7 +70,7 @@ class MovieList extends Component
 
         return view('livewire.movie-list', [
             'entries' => $query->orderByDesc('watchlist_entries.created_at')->get(),
-            'genres' => $genres,
+            'genres'  => $genres,
         ]);
     }
 }
