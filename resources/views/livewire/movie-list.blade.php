@@ -1,7 +1,7 @@
 <div class="relative min-h-screen">
 
     {{-- Quick filters --}}
-    <div class="px-4 py-3 flex gap-2 overflow-x-auto sticky top-0 bg-slate-50 dark:bg-slate-900 z-10 border-b border-slate-200 dark:border-slate-800">
+    <div class="px-4 py-3 flex gap-2 overflow-x-auto sticky bg-slate-50 dark:bg-slate-900 z-10 border-b border-slate-200 dark:border-slate-800" style="top: var(--safe-top);">
         <button wire:click="$set('statusFilter', '')"
             class="px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors {{ $statusFilter === '' ? 'bg-sky-500 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700' }}">Tous</button>
         <button wire:click="$set('statusFilter', 'to_watch')"
